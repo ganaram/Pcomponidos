@@ -22,6 +22,25 @@
     @endif
 </div>
 <div class="form-group">
+    <label for="brand">Brand</label>
+    <select class="form-control generalInput {{ $errors->has('brand')?"is-invalid":"" }}" id="brand" name="brand[]" multiple>
+        @foreach($brands as $brand)
+            <option value="{{ $brand->id }}"
+                @if( !$errors->isEmpty() )
+                    {{ in_array($brand->id, old('brand') ?? [] )?"selected":"" }}
+                @elseif( isset($book) )
+                    {{ $component->brand->contains($brand->id)?"selected":"" }}
+                @endif
+            >{{ $brand->name }}</option>
+        @endforeach
+    </select>
+    @if( $errors->has('brand') )
+    <div class="invalid-feedback">
+        {{ $errors->first('brand') }}
+    </div>
+    @endif
+</div>
+<div class="form-group">
     <label for="type">Type</label>
     <select class="form-control selectpicker" id="type" name="type">
     <option value="motherBoard">Motherboard</option>

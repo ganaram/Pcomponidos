@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Component;
+use App\Brand;
 use Illuminate\Http\Request;
 use App\Http\Requests\ComponentRequest;
 
@@ -33,7 +34,13 @@ class ComponentsController extends Controller
      */
     public function create()
     {
-        return view('public.components.create');
+        $components = Component::all();
+        $brands = Brand::all();
+
+        return view('public.components.create', [
+            'components' => $components,
+            'brands'    => $brands,
+        ]);
     }
 
     /**
@@ -44,12 +51,14 @@ class ComponentsController extends Controller
      */
     public function store(ComponentRequest $request)
     {
-        Component::create([
+        $component = Component::create([
             'name' => request('name'),
             'slug' => str_slug(request('name'), "-"),
             'info'   => request('info'),
             'type' => request('type')
         ]);
+
+        $component->brands()->sync( request('brand') );
 
         return redirect('/');
     }
@@ -62,9 +71,9 @@ class ComponentsController extends Controller
      */
     public function show($component)
     {
-        $component = Component::where('slug', $component)->firstOrFail();
+        $component = Component::with('brand')->where('slug', $component)->firstOrFail();
 
-        return view('public.components.show', compact('components'));
+        return view('public.components.show', ['component' => $component]);
     }
 
     /**
