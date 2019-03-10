@@ -64,7 +64,7 @@ class ComputersController extends Controller
         $computer = Computer::create([
             'user_id' => $request->user()->id,
             'model' => request('model'),
-            'slug' => str_slug(request('title'), "-"),
+            'slug' => str_slug(request('model'), "--"),
             'description' => request('description'),
             'price' => request('price'),
             'img' => $img->store('imgs','public')

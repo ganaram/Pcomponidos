@@ -1,10 +1,13 @@
 @component('mail::message')
-# New computer: {{ $computer->title }}
+# New Computer made : {{ $computer->model }}
 
 {{ $computer->description }}
-@component('mail::button', ['url' => url('/computer/'. $computer->slug)])
+@component('mail::button', ['url' => url('/computers/'. $computer->slug)])
 Computer Info
 @endcomponent
+
+Price:
+{{$computer->price}} €
 
 Thanks,<br>
 {{ config('app.name') }}
